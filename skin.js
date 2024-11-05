@@ -1,7 +1,7 @@
 // Garden Gnome Software - Skin
 // Pano2VR 7.0.10/20025
 // Filename: ?? ?? ?? ????.ggsk
-// Generated 2024-11-05T13:05:32
+// Generated 2024-11-05T13:09:45
 
 function pano2vrSkin(player,base) {
 	player.addVariable('vis_floorplan', 2, false, { ignoreInState: 0  });
@@ -4846,9 +4846,16 @@ function pano2vrSkin(player,base) {
 				me._external_2.ggUpdateImage()
 			}
 		}
-		el.ggText=el.ggText_untranslated=basePath + "";
-		el.ggUpdateImage();
+		if ((hotspot) && (hotspot.customimage)) {
+			el.ggText=el.ggText_untranslated=hotspot.customimage;
+			els.setAttribute('src', hotspot.customimage);
+			els.style.width=hotspot.customimagewidth + 'px';
+			els.style.height=hotspot.customimageheight + 'px';
+			me.ggUse3d = hotspot.use3D;
+			me.gg3dDistance = hotspot.distance3D;
+		}
 		els['ondragstart']=function() { return false; };
+		player.checkLoaded.push(els);
 		el.ggUpdateText();
 		el.ggId="External 2";
 		el.ggDx=0;
@@ -4909,10 +4916,10 @@ function pano2vrSkin(player,base) {
 			if (img.naturalWidth < parentWidth) parentWidth = img.naturalWidth;
 			if (img.naturalHeight < parentHeight) parentHeight = img.naturalHeight;
 			var currentWidth,currentHeight;
-			currentWidth = img.naturalWidth;
-			currentHeight = img.naturalHeight;
-			img.style.width = currentWidth + 'px';
-			img.style.height = currentHeight + 'px';
+			if ((hotspot) && (hotspot.customimage)) {
+				currentWidth  = hotspot.customimagewidth;
+				currentHeight = hotspot.customimageheight;
+			}
 			if (!me._external_2.ggScrollbars || currentWidth < me._external_2.clientWidth) {
 				img.style.right='';
 				img.style.left='0px';
@@ -5341,6 +5348,14 @@ function pano2vrSkin(player,base) {
 		me._external_2.appendChild(me._rectangle_5);
 		me._ht_node.appendChild(me._external_2);
 		me._ht_node.logicBlock_scaling();
+		if ((hotspot) && (hotspot.customimage)) {
+			me._external_2.style.width=hotspot.customimagewidth + 'px';
+			me._external_2.style.height=hotspot.customimageheight + 'px';
+			let d = 0;
+			me._external_2.style.left='calc(50% - ' + ((hotspot.customimagewidth)/2 + 0) +'px' + ((d<0) ? ' - ' : ' + ') + d + 'px)';
+			d = 0;
+			me._external_2.style.top='calc(50% - ' + ((hotspot.customimageheight)/2 + 0) +'px' + ((d<0) ? ' - ' : ' + ') + d + 'px)';
+		}
 		me._image_3.logicBlock_position();
 		me._image_3.logicBlock_alpha();
 		me._text_6.logicBlock_size();
